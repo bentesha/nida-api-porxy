@@ -94,7 +94,7 @@ SoapRequest.prototype.createEnvelop = function(params) {
   return `
   <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/" xmlns:nid="http://schemas.datacontract.org/2004/07/NID_API">
   <soap:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:Action>http://tempuri.org/IGatewayService/${params.action}</wsa:Action><wsa:To>https://nacer01/CIG_Test/GatewayService.svc</wsa:To></soap:Header>
-    soap:Body>
+    <soap:Body>
       <tem:${params.action}>
         <!--Optional:-->
         <tem:iRequest>
