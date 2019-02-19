@@ -1,0 +1,26 @@
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" 
+  xmlns:a="http://www.w3.org/2005/08/addressing">
+  <s:Header>
+    <a:Action s:mustUnderstand="1">http://tempuri.org/IGatewayService/BiometricVerificationResponse</a:Action>
+  </s:Header>
+  <s:Body>
+    <BiometricVerificationResponse xmlns="http://tempuri.org/">
+      <BiometricVerificationResult xmlns:b="http://schemas.datacontract.org/2004/07/NID_API" 
+        xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <b:Body>
+          <b:CryptoInfo>
+            <b:EncryptedCryptoIV>test</b:EncryptedCryptoIV>
+            <b:EncryptedCryptoKey>test</b:EncryptedCryptoKey>
+          </b:CryptoInfo>
+          <b:Payload>test</b:Payload>
+          <b:Signature>test</b:Signature>
+        </b:Body>
+        <b:Code>00</b:Code>
+        <b:Header>
+          <b:Id>201902181055008902031</b:Id>
+          <b:TimeStamp>20190218105500</b:TimeStamp>
+        </b:Header>
+      </BiometricVerificationResult>
+    </BiometricVerificationResponse>
+  </s:Body>
+</s:Envelope>
