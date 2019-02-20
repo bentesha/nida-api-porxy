@@ -9,7 +9,7 @@ function SoapEndPoint(url) {
     'Content-Type': 'text/xml;charset=UTF-8',
     'User-Agent': 'Apache-HttpClient/4.1.1 (java 1.5)',
 	  'Host': 'nacer01',
-	  'Content-Type': 'application/soap+xml;charset=UTF-8;action="http://tempuri.org/IGatewayService/${options.action}"'
+	  'Content-Type': 'application/soap+xml;charset=UTF-8;action="http://tempuri.org/IGatewayService/BiometricVerification"'
     }
   });
 }
