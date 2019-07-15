@@ -23,11 +23,13 @@ module.exports = (soapRequest) => {
             //Finger print mactch was successfull
             const json = await convertToJson(result.payload, getMapping());
             response.json({
+              id: result.id,
               code: result.code,
               profile: json
             });
           } else {
             response.json({
+              id: result.id,
               code: result.code
             });
           }

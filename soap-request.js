@@ -32,11 +32,13 @@ SoapRequest.prototype.execute = async function (action, payload) {
   if(result.key && result.iv && result.payload && result.signature) {
     const payload = this.decryptPayload(result);
     return {
+      id: result.id,
       code: result.code,
       payload
     };
   } else {
     return {
+      id: result.id,
       code: result.code
     };
   }
@@ -58,12 +60,14 @@ const getMatch = (regex, string) => {
 const decode = base64Value => base64Value && Buffer.from(base64Value, 'base64');
 
 SoapRequest.prototype.parseResponse = function(xml) {
+  const regId = /<.{1}:Id>(.+)<\/.{1}:Id>/gi;
   const regCode = /<.{1}:Code>(.+)<\/.{1}:Code>/gi;
   const regIV = /<.{1}:EncryptedCryptoIV>(.+)<\/.{1}:EncryptedCryptoIV>/gi;
   const regKey = /<.{1}:EncryptedCryptoKey>(.+)<\/.{1}:EncryptedCryptoKey>/gi;
   const regPayload = /<.{1}:Payload>(.+)<\/.{1}:Payload>/gi;
   const regSignature = /<.{1}:Signature>(.+)<\/.{1}:Signature>/gi;
 
+  const id = getMatch(regId, xml);
   const code = getMatch(regCode, xml);
   
   const iv = getMatch(regIV, xml);
@@ -71,7 +75,7 @@ SoapRequest.prototype.parseResponse = function(xml) {
   const payload = getMatch(regPayload, xml);
   const signature = getMatch(regSignature, xml);
 
-  return { code, iv, key, payload, signature };
+  return { id, code, iv, key, payload, signature };
 };
 
 SoapRequest.prototype.decryptPayload = function(params) {
