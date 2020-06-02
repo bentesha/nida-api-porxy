@@ -21,3 +21,20 @@ exports.convertToJson = (xml, mapping = {}) => {
     });
   });
 }
+
+exports.xmlToJson = (xml) => {
+  const options = {
+    explicitArray: false
+  };
+
+  return new Promise((resolve, reject) => {
+    parseString(xml, options, (error, result) => {
+      if(error) {
+        console.log('Passing XML failed', error);
+        reject(error);
+        return;
+      }
+      resolve(result);
+    });
+  });
+}

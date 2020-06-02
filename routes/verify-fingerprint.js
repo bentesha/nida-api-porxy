@@ -1,6 +1,7 @@
 const express = require('express');
-const { convertToJson } = require('../helpers/xml');
+const { convertToJson, xmlToJson } = require('../helpers/xml');
 const validator = require('./middleware/validate-verify-fingerprint');
+const shortid = require('shortid')
 
 module.exports = (soapRequest) => {
 
@@ -17,17 +18,33 @@ module.exports = (soapRequest) => {
       </Payload>
       `;
       
+      const log = {
+        id: shortid.generate(),
+        finger: fingerCode,
+        timestamp: new Date().getTime(),
+        nin: nin
+      }
+
       return soapRequest.execute('BiometricVerification', payload)
         .then(async result => {
+          log.requestTime = new Date().getTime() - log.timestamp
+          log.code = result.code
+          log.transId = result.id || ''
+          log.responseXml = result.payload || ''
+
           if(result.code === '00') {
-            //Finger print mactch was successfull
+            //Finger print match was successfull
             const json = await convertToJson(result.payload, getMapping());
+            log.requestJson = await xmlToJson(result.payload);
+
             response.json({
               id: result.id,
               code: result.code,
               profile: json
             });
           } else {
+            log.responseJson = ''
+
             response.json({
               id: result.id,
               code: result.code
