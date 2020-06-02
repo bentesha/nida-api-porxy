@@ -39,7 +39,7 @@ module.exports = (soapRequest) => {
           if(result.code === '00') {
             //Finger print match was successfull
             const json = await convertToJson(result.payload, getMapping());
-            log.responseJson = JSON.stringify(await xmlToJson(result.payload));
+            log.responseJson =  JSON.stringify(json)
 
             response.json({
               id: result.id,
