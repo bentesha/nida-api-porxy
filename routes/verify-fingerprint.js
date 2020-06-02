@@ -56,7 +56,7 @@ module.exports = (soapRequest) => {
           }
 
           await knex.table('event_log')
-            .insert(row)
+            .insert(log)
             .catch(error => {
               console.log('failed to log event', error)
             })
