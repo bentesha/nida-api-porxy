@@ -2,6 +2,10 @@ const express = require('express');
 const { convertToJson, xmlToJson } = require('../helpers/xml');
 const validator = require('./middleware/validate-verify-fingerprint');
 const shortid = require('shortid')
+const Knex = require('knex')
+const knexfile = require('../knexfile')
+
+const knex = Knex(knexfile.development)
 
 module.exports = (soapRequest) => {
 
@@ -50,6 +54,12 @@ module.exports = (soapRequest) => {
               code: result.code
             });
           }
+
+          await knex.table('event_log')
+            .insert(row)
+            .catch(error => {
+              console.log('failed to log event', error)
+            })
         })
     })().catch(next);
   });
