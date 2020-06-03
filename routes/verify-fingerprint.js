@@ -46,6 +46,18 @@ module.exports = (soapRequest) => {
               code: result.code,
               profile: json
             });
+          } else if (result.code === '141') {
+            const json = await xmlToJson(result.payload)
+            const fingers = json.NidaResponse && json.NidaResponse.Fingerprints ? 
+              json.NidaResponse.Fingerprints.split('|').map(i => i.trim())
+              : []
+            log.responseJson = JSON.stringify(json)
+
+            response.json({
+              id: result.id,
+              code: result.code,
+              fingers
+            })
           } else {
             log.responseJson = ''
 
