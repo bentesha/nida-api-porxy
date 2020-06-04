@@ -10,7 +10,7 @@ const knex = Knex(knexfile.development)
 module.exports = (soapRequest) => {
 
   const router = express.Router();
-  router.post('/verify-fingerprint', validator, ({ body }, response, next) => {
+  router.post('/', validator, ({ body }, response, next) => {
     (async () => {
       const { nin, template, fingerCode } = body;
       const payload = 
@@ -39,25 +39,26 @@ module.exports = (soapRequest) => {
           if(result.code === '00') {
             //Finger print match was successfull
             const json = await convertToJson(result.payload, getMapping());
-            log.responseJson =  JSON.stringify(json)
-
-            response.json({
+            
+            const data = {
               id: result.id,
               code: result.code,
               profile: json
-            });
+            }
+            response.json(data);
+            log.responseJson =  JSON.stringify(data)
           } else if (result.code === '141') {
             const json = await xmlToJson(result.payload)
-            const fingers = json.NidaResponse && json.NidaResponse.Fingerprints ? 
-              json.NidaResponse.Fingerprints.split('|').map(i => i.trim())
+            const fingers = json.NidaReponse && json.NidaReponse.Fingerprints ? 
+              json.NidaReponse.Fingerprints.split('|').map(i => i.trim())
               : []
-            log.responseJson = JSON.stringify(json)
-
-            response.json({
+            const data = {
               id: result.id,
               code: result.code,
               fingers
-            })
+            }
+            response.json(data)
+            log.responseJson = JSON.stringify(data)
           } else {
             log.responseJson = ''
 

@@ -14,6 +14,9 @@ exports.convertToJson = (xml, mapping = {}) => {
         return;
       }
       const json = Object.entries(mapping).reduce((json, [key, value]) => {
+        if (result.NidaResponse[key] === undefined) {
+          return json
+        }
         json[value] = result.NidaResponse[key];
         return json;
       }, {});
