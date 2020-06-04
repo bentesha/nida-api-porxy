@@ -27,7 +27,7 @@ SoapRequest.prototype.execute = async function (action, payload) {
   };
 
   const envelop = this.createEnvelop(params);
-  const response = await this.endPoint.post(envelop);
+  const response = await this.endPoint.post(envelop, action);
   const result = this.parseResponse(response);
   if(result.key && result.iv && result.payload && result.signature) {
     const payload = this.decryptPayload(result);

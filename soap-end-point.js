@@ -8,14 +8,16 @@ function SoapEndPoint(url) {
 	  'Connection': 'Keep Alive',
     'Content-Type': 'text/xml;charset=UTF-8',
     'User-Agent': 'Apache-HttpClient/4.1.1 (java 1.5)',
-	  'Host': 'nacer01',
-	  'Content-Type': 'application/soap+xml;charset=UTF-8;action="http://tempuri.org/IGatewayService/BiometricVerification"'
+	  'Host': 'nacer01'
     }
   });
 }
 
-SoapEndPoint.prototype.post = async function (data) {
-  return this.axios.post(this.url, data)
+SoapEndPoint.prototype.post = async function (data, action = 'BiometricVerification') {
+  const headers = {
+    'Content-Type': `application/soap+xml;charset=UTF-8;action="http://tempuri.org/IGatewayService/${action}"`
+  }
+  return this.axios.post(this.url, data, { headers })
     .then(response => {
       return response.data;
     });
