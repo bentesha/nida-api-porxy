@@ -22,7 +22,7 @@ module.exports = (soapRequest) => {
       }, '')
       const payload = `<Payload>${innerTag}</Payload>`
       const result = await soapRequest.execute('AltBiometricVerification', payload)
-      const json = await convertToJson(result.payload, getMapping())
+      const json = result.payload ? await convertToJson(result.payload, getMapping()) : undefined
       
       const data = {
         id: result.id,
