@@ -39,7 +39,6 @@ describe('API /additional-sim', () => {
     scope.done() // Assert config.tcra.endPoint is called
     
     expect(body.conversationId).to.equal('111-2345-55688')
-    expect(body.operatorCode).to.equal('00004')
     expect(body.responseCode).to.equal('150')
     expect(body.responseDescription).to.equal('Approved')
     expect(body.timestamp).to.equal('20200622171244')

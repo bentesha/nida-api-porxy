@@ -89,6 +89,7 @@ router.post('/', ({ body }, response, next) => {
     json.transactionId = json.transactionID
     delete json.transactionID
     delete json.conversationID
+    delete json.operatorCode
 
     response.json(json)
   })().catch(next)
