@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mamlakaSIMResponse>
+  <conversationID>111-2345-55688</conversationID>
+  <operatorCode>00004</operatorCode>
+  <responseCode>150</responseCode>
+  <responseDescription>Approved</responseDescription>
+  <timestamp>20200622171244</timestamp>
+  <transactionID>20200622171244-00002-1592835164157</transactionID>
+</mamlakaSIMResponse>
