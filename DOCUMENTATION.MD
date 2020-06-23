@@ -1,8 +1,11 @@
-# NIDA API Proxy Documentation
+# NIDA API Proxy Documentation (v1.1)
 
-**Version:** 1.0
+**Revision History**
 
-**Date:** 08 June, 2020
+|Date|Version|Comments|
+|--|--|--|
+|23 June, 2020|v1.1|Additional SIM Card API|
+|08 June, 2020|v1.0|Initial version|
 
 **Prepared by:** Benedict Tesha (benedict.tesha@jamaatech.com)
 
@@ -13,7 +16,9 @@
 ### 1. Introduction
 This document contains information on API's provided by the NIDA gateway proxy for verification of customer information using the fingerprint option and its alternative method for customer with defaced fingerprints or who don't have their fingerprints registered with the NIDA database.
 
-Be sure to replace `<server name>` and `<port>` with the actual values which can be obtained from the Smile Tanzania IT team.
+Revision 1.1 of this document covers the `additional SIM Card` API as per TCRA requirements.
+
+Be sure to replace `<server name>` and `<port>` with the actual values which should be obtained from the Smile Tanzania IT team.
 
 ### 2. Normal Fingerprint Verification
 For normal fingerprint verifications, an API call must be made to the `fingerprint-verify` end-point with a JSON payload containing customer NIN, finger code and the customer fingerprint WSQ image binary encoded as base64 string as show below:
@@ -194,8 +199,74 @@ If the minimal number of correct answers has been reached, the response will con
 }
 ```
 
+### 3. Additional SIM Card
+For every customer that need to register an additional SIM card, authorization from TCRA must be requested thorough this API before SIM registration process can take place.
 
+#### Request
+The request should be sent to `/additionalSIMCard` end point with a payload containing customer and agent information as shown in example below:
 
+```
+POST http://<server ip>:<port>/additionalSIMCard
+```
 
+```json
+{
+  "agentCode": "123",
+  "agentNIN": "12345678901234567890",
+  "agentMSISDN": "255123456789",
+  "conversationId": "39938333",
+  "customerMSISDN": "255987654321",
+  "customerNIN": "09876543211234567890",
+  "reasonCode": "1006",
+  "registrationCategoryCode": "2000",
+  "otherNumbers": []
+}
+```
 
+Description for each parameter is shown in the following table:
 
+|Parameter|Description|
+|---|---|
+|`agentCode`|A unique code assigned to the agent|
+|`agentNIN`|NIN of the agent|
+|`agentMSISDN`|A twelve digit agent MSISDN|
+|`coversationId`|A random string that uniquely identifies this request that should be stored and used as reference in the future|
+|`customerMSISDN`|A twelve digig customer MSISDN|
+|`customerNIN`|A 20 digit customer NIN|
+|`reasonCode`|A code indicating the reason for additional SIM Card as agreen between MNO and TCRA|
+|`registrationCategoryCode`|The code indicating category for this registration as specified by TCRA|
+|`otherNumbers`|For corporate customers with existing SIM cards registered with them, this array should be populated with all existing SIM cards. Each entry should be a 12 digit MSISDN. For non-corporate customers, an empty array should be supplied instead.|
+
+#### Response
+Unless there is an system error, the HTTP status code is always 200. The response is a JSON payload with he following format:
+
+```json
+{
+  "conversationId": "111-2345-55688",
+  "responseCode": "150",
+  "responseDescription": "Approved",
+  "timestamp": "20200622171244",
+  "transactionId": "20200622171244-00002-1592835164157"
+}
+```
+
+|Parameter|Description|
+|---|---|
+|`conversationId`|The id of this conversation as specifed in the original request|
+|`responseCode`|Code indicating the outcome of the additional SIM request|
+|`responseDescription`|Description for the `responseCode`|
+|`timestamp`|Timestamp for this response in the `YYYYMMDDHHmmss` format|
+|`transactionId`|A unique id that can be used to reference this transaction in the future|
+
+The `responseCode` parameter can be one of the following values:
+
+|Code|Description|
+|---|---|
+|`999`|Invalid authentication|
+|`150`|Approved|
+|`151`|Rejected. Customer NIN blacklisted|
+|`152`|Rejected. Agent NIN blacklisted|
+|`153`|Rejected. Customer reached max allowed SIM cards|
+|`154`|Rejected. Customer reason to have addtional SIM card not accepted|
+|`155`|Rejected. The registration category is incorrect|
+|`000`|Rejected. Request submitted with null parameter(s)|
