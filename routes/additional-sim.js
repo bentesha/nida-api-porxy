@@ -57,8 +57,7 @@ router.post('/', ({ body }, response, next) => {
       })
     }
 
-    const payload = `
-      <?xml version="1.0"?>
+    const payload = `<?xml version="1.0"?>
       <mamlakaSIMRequest>
         <requestHeader>
           <operatorCode>${config.tcra.operatorCode}</operatorCode>
