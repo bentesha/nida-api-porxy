@@ -77,9 +77,11 @@ router.post('/', ({ body }, response, next) => {
         </requestBody>
       </mamlakaSIMRequest>
       `
-    
+    const headers = {
+      'Content-Type': 'application/xml'
+    }
     const json = await http
-      .post('/', payload)
+      .post('/', payload, { headers })
       .then(response => response.data)
       .then(xmlToJson)
       .then(json => json.mamlakaSIMResponse)
