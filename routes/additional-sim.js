@@ -49,12 +49,10 @@ router.post('/', ({ body }, response, next) => {
         return '<otherNumber/>'
       }
       return value.otherNumbers.map(msisdn => {
-        return `
-          <otherNumber>
+        return `<otherNumber>
             <msisdn>${msisdn}</msisdn>
-          </otherNumber>
-          `
-      })
+          </otherNumber>`
+      }).join('')
     }
 
     const payload = `<?xml version="1.0"?>
