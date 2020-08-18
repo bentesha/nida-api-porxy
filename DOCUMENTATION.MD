@@ -1,9 +1,10 @@
-# NIDA API Proxy Documentation (v1.1)
+# NIDA API Proxy Documentation (v1.2)
 
 **Revision History**
 
 |Date|Version|Comments|
 |--|--|--|
+|17 July, 2020|v1.2|CCID and registration type parameters added to additional SIM API|
 |23 June, 2020|v1.1|Additional SIM Card API|
 |08 June, 2020|v1.0|Initial version|
 
@@ -216,9 +217,11 @@ POST http://<server ip>:<port>/additionalSIMCard
   "agentMSISDN": "255123456789",
   "conversationId": "39938333",
   "customerMSISDN": "255987654321",
+  "iccid": "83626755439871126",
   "customerNIN": "09876543211234567890",
   "reasonCode": "1006",
   "registrationCategoryCode": "2000",
+  "registrationType": "Existing",
   "otherNumbers": []
 }
 ```
@@ -232,9 +235,11 @@ Description for each parameter is shown in the following table:
 |`agentMSISDN`|A twelve digit agent MSISDN|
 |`coversationId`|A random string that uniquely identifies this request that should be stored and used as reference in the future|
 |`customerMSISDN`|A twelve digig customer MSISDN|
+|`iccid`|ICCID to be associated with customer SIM|
 |`customerNIN`|A 20 digit customer NIN|
 |`reasonCode`|A code indicating the reason for additional SIM Card as agreen between MNO and TCRA|
 |`registrationCategoryCode`|The code indicating category for this registration as specified by TCRA|
+|`registrationType`|Type of registration. Valid values are either `New` or `Existing`|
 |`otherNumbers`|For corporate customers with existing SIM cards registered with them, this array should be populated with all existing SIM cards. Each entry should be a 12 digit MSISDN. For non-corporate customers, an empty array should be supplied instead.|
 
 #### Response
